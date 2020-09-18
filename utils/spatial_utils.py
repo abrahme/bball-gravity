@@ -9,7 +9,7 @@ def create_rotation_matrix(a: float) -> np.ndarray:
     :return:
     """
 
-    return np.ndarray([[np.cos(a), np.sin(a)], [-np.sin(a), np.cos(a)]])
+    return np.array([[np.cos(a), -np.sin(a)], [np.sin(a), np.cos(a)]])
 
 
 def apply_rotation_matrix(rot_mat: np.ndarray, x: np.ndarray) -> np.ndarray:
@@ -35,13 +35,24 @@ def angle(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     return np.arccos(np.einsum("ij,jk->ik", norm_a, norm_b.T))
 
 
-def distance(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def squared_distance(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """
 
     :param a: n x 2 array of (x,y) coordinates
     :param b: m x 2 array of (x,y) coordinates
-    :return: n x m array of distance between a_i and b_j
+    :return: n x m array of squared distance between a_i and b_j
     """
-    return cdist(a, b, 'euclidean')
+    return np.square(cdist(a, b, 'euclidean'))
+
+
+def center(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+    """
+    centers locations a around b
+    :param a: n x 2 array of (x,y) coordinates
+    :param b: either 1 x 2 array of (x,y) coordinates
+    :return: n x 2 array
+    """
+
+    return a - b
 
 
