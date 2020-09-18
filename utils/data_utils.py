@@ -1,7 +1,6 @@
 import json
-from typing import Dict, List
+from typing import Dict
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 def read_data(data_path: str) -> Dict:
