@@ -1,11 +1,12 @@
 import json
+import ast
 from typing import Dict
 import numpy as np
 import pandas as pd
 from typing import List
 
 
-def read_data(data_path: str) -> Dict:
+def read_data(data_path: str) -> pd.DataFrame:
     """
 
     :param data_path: takes a path to the json data, and returns the json as dictionary
@@ -54,7 +55,7 @@ def flip_court(frame: np.ndarray) -> np.ndarray:
     """
     copy_frame = np.zeros_like(frame)
     copy_frame[:, 1] = frame[:, 1]
-    copy_frame[:, 0] = np.min(frame[:, 0], 94 - frame[:, 0])  ### flip over half court line
+    copy_frame[:, 0] = np.minimum(frame[:, 0], 94 - frame[:, 0])  ### flip over half court line
     return copy_frame
 
 
@@ -77,3 +78,10 @@ def make_tensor(frame: np.ndarray, player_index: List[int], n_players: int, valu
     return tensor
 
 
+def string2array(x: str) -> np.ndarray:
+    """
+
+    :param x: string representation of moment array
+    :return: numpy array of moment
+    """
+    return np.array([ast.literal_eval(val) for val in x.split(";")])
