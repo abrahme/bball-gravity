@@ -1,8 +1,10 @@
 import json
 import ast
+from abc import ABC
 from typing import Dict
 import numpy as np
 import pandas as pd
+from torch.utils.data import DataLoader, Dataset
 from typing import List
 
 
@@ -59,25 +61,6 @@ def flip_court(frame: np.ndarray) -> np.ndarray:
     return copy_frame
 
 
-def make_tensor(frame: np.ndarray, player_index: List[int], n_players: int, values: np.ndarray,
-                resolution: tuple) -> np.ndarray:
-    """
-
-    :param frame: n x 2 array of locations
-    :param player_index: n locating where in tensor to store values
-    :param n_players: total number of players in tensor
-    :param values: value at tensor location
-    :param resolution: resolution of grid to plot location
-    :return: matrix of ( n_players x resolution)
-    """
-    x, y = resolution
-    tensor = np.zeros((n_players, x, y))
-    resolved_locations = np.round(frame)
-    tensor[player_index, resolved_locations[:, 0], resolved_locations[:, 1]] = values
-
-    return tensor
-
-
 def string2array(x: str) -> np.ndarray:
     """
 
@@ -85,3 +68,26 @@ def string2array(x: str) -> np.ndarray:
     :return: numpy array of moment
     """
     return np.array([ast.literal_eval(val) for val in x.split(";")])
+
+
+class GravityDataSet(Dataset):
+    def __init__(self, T: int, P: int, Q: int, R: int) -> None:
+        """
+
+        :param T: max number of time steps
+        :param P: number of players
+        :param Q: x resolution
+        :param R: y resolution
+        """
+        self.T = T
+        self.Q = Q
+        self.R = R
+        self.P = P
+
+    def __len__(self):
+        pass
+
+    def __getitem__(self, idx):
+        pass
+
+
