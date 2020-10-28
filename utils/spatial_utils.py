@@ -24,9 +24,9 @@ def apply_rotation_matrix(rot_mat: np.ndarray, x: np.ndarray) -> np.ndarray:
 
 def angle(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """
-    finds elementwise angle between two vectors
-    :param a: n x 2 array of (x,y) coordinates
-    :param b: m x 2 array of (x,y) coordinates
+    finds elementwise angle between
+    :param a: array
+    :param b: array
     :return: n x m array of angles between a_i and b_j
     """
 
