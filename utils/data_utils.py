@@ -1,6 +1,6 @@
 import json
 import ast
-from abc import ABC
+import pickle
 from typing import Dict
 import numpy as np
 import pandas as pd
@@ -26,6 +26,18 @@ def write_data(data_path: str, data: Dict) -> None:
     """
     with open(data_path, "w") as f:
         json.dump(data, f)
+    f.close()
+
+
+def pickle_data(data_path: str, data) -> None:
+    """
+
+    :param data_path: string where to pickle
+    :param data: python object
+    :return:
+    """
+    with open(data_path, "wb") as f:
+        pickle.dump(data, f)
     f.close()
 
 
@@ -69,9 +81,8 @@ def string2array(x: str) -> np.ndarray:
     """
     return np.array([ast.literal_eval(val) for val in x.split(";")])
 
-
 class GravityDataSet(Dataset):
-    def __init__(self, T: int, P: int, Q: int, R: int) -> None:
+    def __init__(self, T: int, P: int, Q: int, R: int, file_path: str,) -> None:
         """
 
         :param T: max number of time steps
@@ -89,5 +100,3 @@ class GravityDataSet(Dataset):
 
     def __getitem__(self, idx):
         pass
-
-
