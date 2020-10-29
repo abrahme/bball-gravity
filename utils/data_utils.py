@@ -4,8 +4,6 @@ import pickle
 from typing import Dict
 import numpy as np
 import pandas as pd
-from torch.utils.data import DataLoader, Dataset
-from typing import List
 
 
 def read_data(data_path: str) -> pd.DataFrame:
@@ -17,6 +15,16 @@ def read_data(data_path: str) -> pd.DataFrame:
 
     return pd.read_csv(data_path)
 
+def read_json(data_path:str) -> Dict:
+    """
+
+    :param data_path: self explanatory
+    :return:
+    """
+    with open(data_path,"r") as f:
+        data = json.load(f)
+    f.close()
+    return data
 
 def write_data(data_path: str, data: Dict) -> None:
     """
@@ -39,6 +47,18 @@ def pickle_data(data_path: str, data) -> None:
     with open(data_path, "wb") as f:
         pickle.dump(data, f)
     f.close()
+
+
+def unpickle_data(data_path: str):
+    """
+
+    :param data_path: string where to unpickle
+    :return:
+    """
+    with open(data_path, "rb") as f:
+        unpickled = pickle.load(f)
+    f.close()
+    return unpickled
 
 
 def check_valid(frame: np.ndarray) -> bool:
@@ -80,23 +100,3 @@ def string2array(x: str) -> np.ndarray:
     :return: numpy array of moment
     """
     return np.array([ast.literal_eval(val) for val in x.split(";")])
-
-class GravityDataSet(Dataset):
-    def __init__(self, T: int, P: int, Q: int, R: int, file_path: str,) -> None:
-        """
-
-        :param T: max number of time steps
-        :param P: number of players
-        :param Q: x resolution
-        :param R: y resolution
-        """
-        self.T = T
-        self.Q = Q
-        self.R = R
-        self.P = P
-
-    def __len__(self):
-        pass
-
-    def __getitem__(self, idx):
-        pass
