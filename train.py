@@ -14,7 +14,7 @@ if __name__ == "__main__":
                              player_encoding_path="processed_data/player_map.json",
                              transform=transforms.Compose([ToTensor()]))
 
-    train_loader = DataLoader(dataset, batch_size=1, shuffle=True)
+    train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     model = TRL(input_size=(batch_size, 960, 48, 47, 50),
                 ranks=(10,3,3,10), output_size=(batch_size, 1))
@@ -31,7 +31,6 @@ if __name__ == "__main__":
         for batch_idx, (data, target) in enumerate(train_loader):
             x = data.to(device)
             y = target.to(device)
-
             optimizer.zero_grad()
             output = model(x.float())
             loss = criterion(x, y) + regularizer * model.penalty(2)
