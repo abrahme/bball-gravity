@@ -1,5 +1,5 @@
 from utils.spatial_utils import *
-from scipy.optimize import lsq_linear
+from scipy.optimize import minimize
 
 
 def equilibrium_matrix(frame: np.ndarray, basket: np.ndarray = np.array([[4.0, 25.0]])) -> np.ndarray:
@@ -50,10 +50,11 @@ def calculate_gravity(frame: np.ndarray) -> np.ndarray:
     :param frame: (11 x 2) array
     :return:
     """
+    ball = np.array([1])
+
     A = equilibrium_matrix(frame)
-    lb = -np.inf * np.ones((12,))
-    lb[0] = 1  # sets the ball to be 1
-    ub = np.inf * np.ones((12,))
-    ub[0] = 1.01
-    result = lsq_linear(A, np.zeros((24,)), bounds=(lb, ub))
+    result = minimize(lambda x: np.square(
+        A.dot(np.concatenate([ball, x])[:, np.newaxis]) * np.repeat(np.concatenate([ball, x]), 2)).sum(),
+                      x0=np.ones((11,)), bounds=[(0, np.inf) for _ in range(11)], options={"direc": np.eye(11)},
+                      method="Powell")
     return result.x

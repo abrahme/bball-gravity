@@ -25,7 +25,9 @@ def conditional_gravity(is_half: bool, moment: str) -> List:
 def map_gravity(is_valid: bool, gravity: list, moment: str) -> Dict:
     if is_valid:
         moment_array = string2array(moment)
-        return {int(key): val for key, val in zip(moment_array[:, 1].tolist() + [-2], gravity)}
+        grav_dict = {-1: 1.0}  ## set ball to 1
+        grav_dict.update({int(key): val for key, val in zip(moment_array[:, 1].tolist() + [-2], gravity)})
+        return grav_dict
     else:
         return {}
 
@@ -70,7 +72,7 @@ if __name__ == "__main__":
         raw_data.to_csv("processed_" + data_file, index=False)
 
         ### now we upload possessions as json
-        pos_data = raw_data[(raw_data["process_frame"] == True) & (raw_data["TEAM_ID"] != '(null)')]
+        pos_data = raw_data[(raw_data["process_frame"] == True)]
         possessions = set(pos_data["POSSESSION_ID"])
         for pos in possessions:
             sub_pos = pos_data[pos_data["POSSESSION_ID"] == pos]
@@ -81,7 +83,7 @@ if __name__ == "__main__":
                 "gravity": [val for val in sub_pos["mapped_gravity"]],
                 "offense_defense": json.loads(list(set(sub_pos["offense_defense"]))[0]),
                 "n_moments": len(sub_pos)
-                }
+            }
             file_name_pos = f"processed_data/possession_data/{max(sub_pos['game_id'])}_{pos}.pkl"
             pickle_data(file_name_pos, data_dump)
             print(f"successfully wrote pos {pos} for {data_file}")
