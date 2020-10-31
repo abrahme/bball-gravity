@@ -76,6 +76,8 @@ class GravityDataSet(Dataset):
             moment = all_moments[t, :, :]
             resolved_location = self.location_to_resolution(moment[1:, 2:4], self.max_x,
                                                             self.max_y).astype(int)  ### don't want ball
+            resolved_location[:, 0] = np.minimum(resolved_location[:, 0], self.Q - 1)
+            resolved_location[:, 1] = np.minimum(resolved_location[:, 1], self.R - 1)
             gravity = all_gravity[t]
             player_indices = []
             grav_vals = []
@@ -88,7 +90,7 @@ class GravityDataSet(Dataset):
                 player_indices.append(player_index)
             gravity_tensor[t, player_indices, resolved_location[:, 0], resolved_location[:, 1]] = np.array(grav_vals)
 
-        sample = {"X": gravity_tensor, "y": np.array([target])}
+        sample = (gravity_tensor, np.array([[float(target)]]))
         if self.transform:
             sample = self.transform(sample)
         return sample
@@ -100,6 +102,5 @@ class ToTensor(object):
     """
 
     def __call__(self, sample):
-        X, y = sample['X'], sample['y']
-        return {'X': torch.from_numpy(X),
-                'y': torch.from_numpy(y)}
+        X, y = sample
+        return torch.from_numpy(X), torch.from_numpy(y)
