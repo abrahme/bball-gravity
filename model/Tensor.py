@@ -47,4 +47,8 @@ class TRL(nn.Module):
         regression_weights = tl.tucker_to_tensor((self.core, self.factors))
         return inner(x, regression_weights, n_modes=tl.ndim(x) - 1) + self.bias
 
-
+    def penalty(self, order=2):
+        penalty = tl.norm(self.core, order)
+        for f in self.factors:
+            penalty = penalty + tl.norm(f, order)
+        return penalty

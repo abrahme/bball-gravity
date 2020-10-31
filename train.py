@@ -17,12 +17,13 @@ if __name__ == "__main__":
     train_loader = DataLoader(dataset, batch_size=1, shuffle=True)
 
     model = TRL(input_size=(batch_size, 960, 48, 47, 50),
-                ranks=(2,2), output_size=(batch_size, 1))
+                ranks=(10,3,3,10), output_size=(batch_size, 1))
 
-    optimizer = optim.SGD(model.parameters(), lr=.01, momentum=.9)
+    optimizer = optim.SGD(model.parameters(), lr=.1, momentum=.9)
     criterion = nn.MSELoss()
 
     n_epochs = 1
+    regularizer = .01
     model = model.to(device)
 
     model.train()
@@ -33,7 +34,8 @@ if __name__ == "__main__":
 
             optimizer.zero_grad()
             output = model(x.float())
-            loss = criterion(x, y)
+            loss = criterion(x, y) + regularizer * model.penalty(2)
+            loss.backward()
             optimizer.step()
             if batch_idx % 1 == 0:
                 print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
