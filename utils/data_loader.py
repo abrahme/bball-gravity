@@ -3,15 +3,15 @@ import torch
 import numpy as np
 from typing import Dict
 from torch.utils.data import Dataset
-from .data_utils import unpickle_data, read_json
+from .data_utils import unpickle_data
 
 
 class GravityDataSet(Dataset):
     def __init__(self, T: int, P: int, Q: int, R: int, max_x: int, max_y: int, data_dir_globbed: str,
-                 player_encoding_path: str, transform=None) -> None:
+                 player_encoding_map: Dict, transform=None) -> None:
         """
         :param transform: torchvision transform function
-        :param player_encoding_path: ex "data/processed_data/player.csv
+        :param player_encoding_map:
         :param data_dir_globbed: ex "data/*.json"
         :param T: max number of time steps
         :param max_x: max value location x can take
@@ -23,14 +23,13 @@ class GravityDataSet(Dataset):
         self.transform = transform
         self.max_y = max_y
         self.max_x = max_x
-        self.player_encoding_path = player_encoding_path
+        self.player_encoding_map = player_encoding_map
         self.data_dir_globbed = data_dir_globbed
         self.T = T
         self.Q = Q
         self.R = R
         self.P = P
         self.data_files = glob.glob(self.data_dir_globbed)
-        self.player_encoding_map = read_json(self.player_encoding_path)
 
     def __len__(self):
         return len(self.data_files)
