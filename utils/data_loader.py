@@ -90,7 +90,7 @@ class GravityDataSet(Dataset):
                 player_indices.append(player_index)
             gravity_tensor[t, player_indices, resolved_location[:, 0], resolved_location[:, 1]] = np.array(grav_vals)
 
-        sample = (gravity_tensor, np.array([[float(target)]]))
+        sample = (gravity_tensor, np.array([float(target)]))
         if self.transform:
             sample = self.transform(sample)
         return sample
