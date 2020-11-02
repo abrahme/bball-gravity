@@ -32,7 +32,7 @@
 - dest: n_epochs
   name: n_epochs
   action: store
-  default: 10
+  default: 1
   help: "number of epochs to train for"
 
 - dest: regularizer
