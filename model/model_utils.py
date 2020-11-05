@@ -18,7 +18,7 @@ def load_model(path: str) -> None:
     :param path: path where to load
     :return:
     """
-    torch.load(path)
+    return torch.load(path)
 
 
 def visualize_player_gravity(model_weights: torch.Tensor, player_index: int):
@@ -31,3 +31,14 @@ def visualize_player_gravity(model_weights: torch.Tensor, player_index: int):
     grav_vals = torch.squeeze(torch.mean(model_weights[:, player_index, :, :], dim=0)).numpy()
     plt.imshow(grav_vals, interpolation="nearest")
     plt.show()
+
+
+def extract_modes(model_weights: list, mode_index: int) -> torch.Tensor:
+    """
+
+    :param model_weights: regression weight list of factors
+    :param mode_index: return mode
+    :return:
+    """
+
+    return model_weights[mode_index]

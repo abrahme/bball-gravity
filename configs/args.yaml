@@ -64,3 +64,9 @@
   action: store
   default: "cpu"
   help: "where to do computations in pytorch"
+
+- dest: save_path
+  name: save_path
+  action: store
+  default: "model/saved_models/model.pth"
+  help: "where to save model upon completion"

@@ -3,7 +3,7 @@ from utils.data_utils import read_json
 from torchvision import transforms
 from torch.utils.data import DataLoader
 from model.Tensor import *
-from model.model_utils import visualize_player_gravity
+from model.model_utils import save_model
 import torch.optim as optim
 import argparse
 import yaml
@@ -78,5 +78,5 @@ if __name__ == "__main__":
                     loss))
         print(f"Epoch: {epoch}, Loss: {epoch_loss / len(dataset)}")
 
-    regression_weights = tl.cp_to_tensor((model.weights, model.factors)).detach()
-    visualize_player_gravity(regression_weights, 0)
+    save_model(model,parsed_args.save_path)
+
