@@ -1,0 +1,72 @@
+---
+- dest: rank
+  name: rank
+  action: store
+  default: 1
+  help: "CP decomposition value to use"
+
+- dest: learning_rate
+  name: learning_rate
+  action: store
+  default: 0.01
+  help: "SGD learning rate"
+
+- dest: Q
+  name: x_resolution
+  action: store
+  default: 24
+  help: "resolution for binning into x axis"
+
+- dest: R
+  name: y_resolution
+  action: store
+  default: 25
+  help: "resolution for binning into y axis"
+
+- dest: batch_size
+  name: batch_size
+  action: store
+  default: 8
+  help: "batch size for SGD"
+
+- dest: n_epochs
+  name: n_epochs
+  action: store
+  default: 1
+  help: "number of epochs to train for"
+
+- dest: regularizer
+  name: regularizer
+  action: store
+  default: 0.01
+  help: "regularizer on tensor weights"
+
+- dest: data_dir
+  name: data_dir
+  action: store
+  default: "processed_data/possession_data/*.pkl"
+  help: "directory for processed files to read from"
+
+- dest: player_data_file
+  name: player_data_file
+  action: store
+  default: "processed_data/player_map.json"
+  help: "file location for mapping players to indices"
+
+- dest: backend
+  name: backend
+  action: store
+  default: "pytorch"
+  help: "backend for computations"
+
+- dest: device
+  name: device
+  action: store
+  default: "cpu"
+  help: "where to do computations in pytorch"
+
+- dest: save_path
+  name: save_path
+  action: store
+  default: "model/saved_models/model.pth"
+  help: "where to save model upon completion"
